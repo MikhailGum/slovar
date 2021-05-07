@@ -1,6 +1,8 @@
 import pandas as pd
 from collections import Counter
 from pymystem3 import Mystem
+import re
+
 
 def data_freq(string: str):
     data_frame_dict = {
@@ -13,11 +15,12 @@ def data_freq(string: str):
 
     return pd.DataFrame(data_frame_dict)
 
-
-f = open('onegin.txt', 'r')
+pattern = '[a-zA-Zа-яА-ЯёЁ]+'
+f = open('Семантика.txt', 'r')
 text = f.read()
+text_clean = ' '.join(re.findall(pattern, text))
 m = Mystem()
-lemmas = m.lemmatize(text)
+lemmas = m.lemmatize(text_clean)
 text_lemmas = ' '.join(lemmas)
 list_words = data_freq(text_lemmas)
 print(list_words.sort_values('frequency', ascending=False))
